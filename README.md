@@ -39,14 +39,21 @@ The system uses a **Node.js backend** to handle data, a **React.js frontend** fo
 air-mouse/
 │
 ├── backend/ # Node.js API + Database logic
+
 │ ├── controllers/
+
 │ ├── models/
-│ ├── routes/
+
+├── routes/
+
 │ └── server.js
-│
+
 ├── frontend/ # React Dashboard UI
+
 │ ├── src/
+
 │ ├── public/
+
 │ └── package.json
 │
 └── README.md # Main project overview
@@ -73,17 +80,12 @@ npm start
 
 
 🧩 Backend runs: http://localhost:5000
-
 🎨 Frontend runs: http://localhost:3000
 
 📡 ESP32 + Sensor Integration
-
 The ESP32 reads motion data from the MPU6050 (Accelerometer + Gyroscope).
-
 Data is sent to the backend (via Wi-Fi / HTTP / MQTT).
-
 The backend logs data and updates the frontend in real time.
-
 BLE Mouse emulation (BleMouse.h) is used for actual cursor control.
 
 📊 Features
