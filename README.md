@@ -60,8 +60,26 @@ air-mouse/
 
 
 ---
-## ⚡ INO FILE TO UPLOAD IN ARDUINO IDE
+---
 
+## 🧠 Arduino (ESP32) Code
+
+Below is the complete `.ino` file for your **Air Mouse**.  
+Upload this to your **ESP32** using the **Arduino IDE**, make sure you’ve installed the required libraries (listed below 👇).
+
+### 🧩 Required Libraries
+Make sure you’ve installed these via Arduino Library Manager:
+- **BleMouse** by T-vK  
+- **Adafruit MPU6050**  
+- **Adafruit Unified Sensor**  
+- **ArduinoJson**  
+- **ESPAsyncWebServer**  
+- **AsyncTCP**
+
+---
+
+### ⚙️ ESP32 Air Mouse Code
+```cpp
 #include <BleMouse.h>
 #include <Adafruit_MPU6050.h>
 #include <Adafruit_Sensor.h>
@@ -246,7 +264,6 @@ void setupWebServer() {
 }
 
 void loop() {
-  // Track BLE connections
   static bool wasConnected = false;
   bool isConnected = bleMouse.isConnected();
   
@@ -259,7 +276,6 @@ void loop() {
   wasConnected = isConnected;
 
   if (isConnected) {
-    // Get sensor data
     sensors_event_t a, g, temp;
     mpu.getEvent(&a, &g, &temp);
 
@@ -270,25 +286,21 @@ void loop() {
     float moveX = gyroZ;
     float moveY = gyroY;
 
-    // Deadzone
     if (fabs(moveX) < threshold) moveX = 0;
     if (fabs(moveY) < threshold) moveY = 0;
 
-    // Dynamic sensitivity
     float speed = sqrt(moveX * moveX + moveY * moveY);
     float dynamicSensitivity = baseSensitivity * (1 + speed * 0.2);
 
     moveX *= dynamicSensitivity;
     moveY *= dynamicSensitivity + 2;
 
-    // Move mouse
     if ((int)moveX != 0 || (int)moveY != 0) {
       bleMouse.move((int)-moveX, (int)moveY);
       moves++;
       totalActions++;
     }
 
-    // Buttons
     static bool leftWasPressed = false;
     bool leftPressed = digitalRead(LEFT_CLICK_PIN) == LOW;
     
@@ -328,9 +340,8 @@ void loop() {
     }
   }
 
-delay(5);
+  delay(5);
 }
-
 
 ---
 
